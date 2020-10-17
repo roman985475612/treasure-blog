@@ -11,7 +11,7 @@ use Yii;
  * @property string|null $title
  * @property string|null $description
  * @property string|null $content
- * @property string|null $data
+ * @property string|null $date
  * @property string|null $image
  * @property int|null $viewed
  * @property int|null $user_id
@@ -38,10 +38,11 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'content'], 'string'],
-            [['data'], 'safe'],
-            [['viewed', 'user_id', 'status', 'category_id'], 'integer'],
-            [['title', 'image'], 'string', 'max' => 255],
+            [['title'], 'required'],
+            [['title'], 'string', 'max' => 255],
+            [['title', 'description', 'content'], 'string'],
+            [['date'], 'date', 'format' => 'php:Y-m-d'],
+            [['date'], 'default', 'value' => date('Y-m-d')],
         ];
     }
 
@@ -55,7 +56,7 @@ class Article extends \yii\db\ActiveRecord
             'title' => 'Title',
             'description' => 'Description',
             'content' => 'Content',
-            'data' => 'Data',
+            'date' => 'Date',
             'image' => 'Image',
             'viewed' => 'Viewed',
             'user_id' => 'User ID',
@@ -92,5 +93,29 @@ class Article extends \yii\db\ActiveRecord
     public function getComments()
     {
         return $this->hasMany(Comment::className(), ['article_id' => 'id']);
+    }
+
+    public function getImage()
+    {
+        return ($this->image) ? "/uploads/$this->image" : "https://fakeimg.pl/200x100/CCCCCC/?text=No%20image";
+    }
+
+    public function saveImage($filename)
+    {
+        $this->image = $filename;
+        return $this->save(false);
+    }
+
+    public function deleteImage()
+    {
+        $imageUploadModel = new ImageUpload();
+        $imageUploadModel->deleteFile($this->image);
+    }
+
+    public function beforeDelete()
+    {
+        $this->deleteImage();
+
+        return parent::beforeDelete();
     }
 }

@@ -17,7 +17,7 @@ class m201016_141519_create_article_table extends Migration
             'title' => $this->string(),
             'description' => $this->text(),
             'content' => $this->text(),
-            'data' => $this->date(),
+            'date' => $this->date(),
             'image' => $this->string(),
             'viewed' => $this->integer(),
             'user_id' => $this->integer(),

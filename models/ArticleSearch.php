@@ -18,7 +18,7 @@ class ArticleSearch extends Article
     {
         return [
             [['id', 'viewed', 'user_id', 'status', 'category_id'], 'integer'],
-            [['title', 'description', 'content', 'data', 'image'], 'safe'],
+            [['title', 'description', 'content', 'date', 'image'], 'safe'],
         ];
     }
 
@@ -59,7 +59,7 @@ class ArticleSearch extends Article
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'data' => $this->data,
+            'date' => $this->date,
             'viewed' => $this->viewed,
             'user_id' => $this->user_id,
             'status' => $this->status,

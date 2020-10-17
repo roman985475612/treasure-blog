@@ -14,3 +14,11 @@ function addActive(selector) {
 }
 
 addActive('#navbarSupportedContent a')
+
+$(function() {
+    $(".form-file-input").on('change', function() {
+        const filename = $(this).val().slice(12)
+        
+        $('.form-file-text').html(filename)
+    })
+})
