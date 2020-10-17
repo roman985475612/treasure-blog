@@ -18,7 +18,10 @@ $this->beginPage(); ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
-    
+    <header>
+        <?= $this->render('_navbar') ?>
+    </header>
+
     <div class="container">
         <?= $content ?>
     </div>
