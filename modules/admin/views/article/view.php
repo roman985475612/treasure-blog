@@ -24,7 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Set image', ['set-image', 'id' => $model->id], ['class' => 'btn btn-outline-info']) ?>
+        <?= Html::a('Set image', ['set-image', 'id' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
+        <?= Html::a('Set category', ['set-category', 'id' => $model->id], ['class' => 'btn btn-outline-secondary']) ?>
     </p>
 
     <?= DetailView::widget([
