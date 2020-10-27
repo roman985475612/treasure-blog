@@ -4,9 +4,11 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
+use app\models\Article;
+use app\models\Category;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
@@ -61,7 +63,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $data = Article::getAll();
+
+        return $this->render('index', [
+            'articles'   => $data['articles'],
+            'pages'      => $data['pages'],
+            'popular'    => Article::getPopular(),
+            'recent'     => Article::getRecent(),
+            'categories' => Category::getAll(),
+        ]);
     }
 
     public function actionSingle()

@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "article".
@@ -159,5 +160,44 @@ class Article extends \yii\db\ActiveRecord
 
             return true;
         }
+    }
+
+    public function getDate()
+    {
+        return Yii::$app->formatter->asDate($this->date);
+    }
+
+    public static function getAll(int $pageSize = 1)
+    {
+        $query = Article::find();
+        
+        $count = $query->count();
+
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
+
+        $articles = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return [
+            'pages' => $pages,
+            'articles' => $articles,
+        ];
+    }
+
+    public static function getPopular()
+    {
+        return Article::find()
+            ->orderBy('viewed desc')
+            ->limit(3)
+            ->all();
+    }
+
+    public static function getRecent()
+    {
+        return Article::find()
+            ->orderBy('date desc')
+            ->limit(3)
+            ->all();
     }
 }
