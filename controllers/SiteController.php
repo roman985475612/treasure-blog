@@ -74,14 +74,23 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionSingle()
+    public function actionSingle($id)
     {
-        return $this->render('single');
+        $article = Article::findOne($id);
+
+        return $this->render('single', [
+            'article' => $article,
+        ]);
     }
 
-    public function actionCategory()
+    public function actionCategory($id)
     {
-        return $this->render('category');
+        $data = Article::getAllByCategory($id, 2);
+
+        return $this->render('category', [
+            'articles'   => $data['articles'],
+            'pages'      => $data['pages'],
+        ]);
     }
 
     /**

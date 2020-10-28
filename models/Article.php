@@ -185,6 +185,24 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getAllByCategory(int $category_id, int $pageSize = 1)
+    {
+        $query = Article::find()->where(['category_id' => $category_id]);
+        
+        $count = $query->count();
+
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
+
+        $articles = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return [
+            'pages' => $pages,
+            'articles' => $articles,
+        ];
+    }
+
     public static function getPopular()
     {
         return Article::find()
