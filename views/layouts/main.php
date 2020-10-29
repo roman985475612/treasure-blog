@@ -51,8 +51,13 @@ PublicAsset::register($this);
                 </ul>
                 <div class="i_con">
                     <ul class="nav navbar-nav text-uppercase">
-                        <li><a href="/site/login">Login</a></li>
-                        <li><a href="/site/signup">Register</a></li>
+                        <?php if (Yii::$app->user->isGuest): ?>
+                            <li><a href="/login">Login</a></li>
+                            <li><a href="/register">Register</a></li>
+                        <?php else: ?>
+                            <li><a><?= Yii::$app->user->identity->username; ?></a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
 
