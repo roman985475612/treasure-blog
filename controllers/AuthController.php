@@ -5,9 +5,28 @@ namespace app\controllers;
 use Yii;
 use app\controllers\AppController;
 use app\models\LoginForm;
+use app\models\RegisterForm;
 
 class AuthController extends AppController
 {
+
+    public function actionRegister()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new RegisterForm();            
+        if ($model->load(Yii::$app->request->post()) && $model->singup()) {
+            return $this->redirect(['login']);
+        }
+
+        $model->password = '';
+        return $this->render('register', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Login action.
      *

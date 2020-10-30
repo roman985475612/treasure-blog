@@ -10,7 +10,7 @@ use yii\web\IdentityInterface;
  * This is the model class for table "user".
  *
  * @property int $id
- * @property string|null $name
+ * @property string|null $username
  * @property string|null $email
  * @property string|null $password
  * @property int|null $isAdmin
@@ -35,7 +35,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['isAdmin'], 'integer'],
-            [['name', 'email', 'password', 'photo'], 'string', 'max' => 255],
+            [['username', 'email', 'password', 'photo'], 'string', 'max' => 255],
         ];
     }
 
@@ -94,8 +94,22 @@ class User extends ActiveRecord implements IdentityInterface
         return User::find()->where(['username' => $username])->one();
     }
 
+    public static function findByEmail($email)
+    {
+        return User::find()->where(['email' => $email])->one();
+    }
+
     public function validatePassword($password)
     {
         return $this->password == $password;
+    }
+
+    public static function create($attributes)
+    {
+        $user = new User;
+        $user->attributes = $attributes;
+        $user->save(false);
+
+        return $user;
     }
 }

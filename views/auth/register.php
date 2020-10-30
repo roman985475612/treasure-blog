@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-8">
                 <div class="leave-comment mr0"><!--leave comment-->
                     
-                    <h3 class="text-uppercase">Login</h3>
+                    <h3 class="text-uppercase">Register</h3>
                     <br>
 
                     <?php $form = ActiveForm::begin([
@@ -28,15 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ]); ?>
 
-                        <?= $form->field($model, 'email')->textInput(['autofocus' => true, 'placeholder' => 'Email']) ?>
+                        <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => 'Username']) ?>
+                        
+                        <?= $form->field($model, 'email')->textInput(['placeholder' => 'Email']) ?>
 
                         <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'password']) ?>
 
-                        <?= $form->field($model, 'rememberMe')->checkbox([
-                            'template' => "<div class=\"col-md-12\">{input} {label}</div>\n<div class=\"col-md-12\">{error}</div>",
-                        ]) ?>
-
-                        <?= Html::submitButton('Login', ['class' => 'btn send-btn', 'name' => 'login-button']) ?>
+                        <?= Html::submitButton('Register', ['class' => 'btn send-btn', 'name' => 'login-button']) ?>
 
                     <?php ActiveForm::end(); ?>
 
