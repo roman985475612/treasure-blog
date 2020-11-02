@@ -4,8 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\controllers\AppController;
-use app\models\LoginForm;
-use app\models\RegisterForm;
+use app\models\forms\LoginForm;
+use app\models\forms\RegisterForm;
 
 class AuthController extends AppController
 {

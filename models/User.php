@@ -106,10 +106,18 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function create($attributes)
     {
-        $user = new User;
-        $user->attributes = $attributes;
-        $user->save(false);
+        $obj = new User;
+        $obj->attributes = $attributes;
+        $obj->save(false);
 
-        return $user;
+        return $obj;
     }
+
+    public function getAvatar($size)
+    {
+        $digest = md5($this->email);
+
+        return "https://www.gravatar.com/avatar/{$digest}?d=identicon&s={$size}";
+    }
+
 }

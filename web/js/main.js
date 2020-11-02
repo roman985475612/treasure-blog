@@ -14,11 +14,17 @@ function addActive(selector) {
 }
 
 addActive('#navbarSupportedContent a')
+addActive('#left-navbar a')
 
-$(function() {
+jQuery(function($) {
     $(".form-file-input").on('change', function() {
         const filename = $(this).val().slice(12)
         
         $('.form-file-text').html(filename)
     })
+
+    $('.numComments').text($('.bottom-comment').length + ' comments');
+
+    var editor = CKEDITOR.replaceAll()
+    CKFinder.setupCKEditor( editor )
 })

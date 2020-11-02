@@ -9,7 +9,9 @@ use yii\web\Controller;
 use yii\web\Response;
 use app\models\Article;
 use app\models\Category;
+use app\models\Tag;
 use app\models\ContactForm;
+use app\models\forms\CommentForm;
 
 class SiteController extends Controller
 {
@@ -75,20 +77,64 @@ class SiteController extends Controller
 
     public function actionSingle($id)
     {
-        $article = Article::findOne($id);
+        $article = Article::find()
+            ->where(['id' => $id])
+            ->with('comments')
+            ->one();
+
+        $article->viewedCounter();
+        $comments = $article->getArticleComments();
+        $commentForm = new CommentForm();
 
         return $this->render('single', [
-            'article' => $article,
+            'article'     => $article,
+            'comments'    => $comments,
+            'commentForm' => $commentForm,
         ]);
     }
 
-    public function actionCategory($id)
+    public function actionComment($article_id)
     {
-        $data = Article::getAllByCategory($id, 2);
+        $model = new CommentForm();          
+        if ($model->load(Yii::$app->request->post())) {
+            Yii::$app->getSession()->setFlash('success', 'Your comment will be added soon!');
+            $model->saveComment($article_id);
+        }
+
+        return $this->redirect(['site/single', 'id' => $article_id]);
+    }
+
+    public function actionCategory($category_id)
+    {
+        $categoryName = Category::find()
+            ->select(['title'])
+            ->where(['id' => $category_id])
+            ->one()
+            ->title;
+
+        $data = Article::getAllByCategory($category_id, 2);
 
         return $this->render('category', [
-            'articles'   => $data['articles'],
-            'pages'      => $data['pages'],
+            'articles' => $data['articles'],
+            'pages'    => $data['pages'],
+            'title'    => 'Category::' . $categoryName,
+        ]);
+    }
+
+    public function actionTag($tag_id)
+    {
+        $tagName = Tag::find()
+            ->select(['title'])
+            ->where(['id' => $tag_id])
+            ->one()
+            ->title;
+
+        $data = Article::getAllByTag($tag_id, 2);
+
+        return $this->render('category', [
+            'articles' => $data['articles'],
+            'pages'    => $data['pages'],
+            'title'    => 'Tag::' . $tagName,
         ]);
     }
 

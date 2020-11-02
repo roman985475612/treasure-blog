@@ -45,8 +45,8 @@ PublicAsset::register($this);
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav text-uppercase">
-                    <li><a data-toggle="dropdown" class="dropdown-toggle" href="/">Home</a>
-                        
+                    <li>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="/">Home</a>
                     </li>
                 </ul>
                 <div class="i_con">
@@ -55,7 +55,11 @@ PublicAsset::register($this);
                             <li><a href="/login">Login</a></li>
                             <li><a href="/register">Register</a></li>
                         <?php else: ?>
-                            <li><a><?= Yii::$app->user->identity->username; ?></a></li>
+                            <?php if (Yii::$app->user->identity->isAdmin): ?>
+                                <li><a href="/admin"><?= Yii::$app->user->identity->username; ?></a></li>
+                            <?php else: ?>
+                                <li><a><?= Yii::$app->user->identity->username; ?></a></li>
+                            <?php endif; ?>
                             <li><a href="/logout">Logout</a></li>
                         <?php endif; ?>
                     </ul>
@@ -67,6 +71,8 @@ PublicAsset::register($this);
     </div>
     <!-- /.container-fluid -->
 </nav>
+
+<?= $this->render('_messages') ?>
 
 <?= $content ?>
 

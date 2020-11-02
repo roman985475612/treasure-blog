@@ -1,11 +1,11 @@
 <?php
 
-use app\assets\TestAsset;
 use yii\helpers\Html;
 
-TestAsset::register($this);
+\app\assets\AdminAsset::register($this);
+?>
 
-$this->beginPage(); ?>
+<?php $this->beginPage(); ?>
 <!doctype html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
@@ -23,7 +23,10 @@ $this->beginPage(); ?>
     </header>
 
     <div class="container">
-        <?= $content ?>
+        <div class="row">
+            <div class="col-md-2"><?= $this->render('_left-navbar') ?></div>
+            <div class="col-md-10"><?= $content ?></div>
+        </div>
     </div>
 
 <?php $this->endBody() ?>

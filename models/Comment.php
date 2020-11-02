@@ -18,6 +18,9 @@ use Yii;
  */
 class Comment extends \yii\db\ActiveRecord
 {
+    const IS_BANNED = 0;
+    const IS_ALLOWED = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -34,8 +37,8 @@ class Comment extends \yii\db\ActiveRecord
         return [
             [['user_id', 'article_id', 'status'], 'integer'],
             [['text'], 'string', 'max' => 255],
-            [['article_id'], 'exist', 'skipOnError' => true, 'targetClass' => Article::className(), 'targetAttribute' => ['article_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['article_id'], 'exist', 'skipOnError' => true, 'targetClass' => Article::class, 'targetAttribute' => ['article_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -60,7 +63,7 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getArticle()
     {
-        return $this->hasOne(Article::className(), ['id' => 'article_id']);
+        return $this->hasOne(Article::class, ['id' => 'article_id']);
     }
 
     /**
@@ -70,6 +73,32 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
+    public function getDate()
+    {
+        return Yii::$app->formatter->asDate($this->created_at);
+    }
+
+    public function isAllowed()
+    {
+        return $this->status == 1;
+    }
+
+    public static function toggleAllow($id)
+    {
+        $obj = static::findOne($id);
+        
+        if ($obj->isAllowed()) {
+            $obj->status = static::IS_BANNED;
+        } else {
+            $obj->status = static::IS_ALLOWED;
+        }
+
+        $obj->save();
+
+        return $obj->status;
+    }
+
 }

@@ -112,6 +112,11 @@ class Article extends \yii\db\ActiveRecord
         ArticleTag::deleteAll(['article_id' => $this->id]);
     }
 
+    public function getAuthor()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
     /**
      * Gets query for [[Comments]].
      *
@@ -203,6 +208,24 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getAllByTag(int $tag_id, int $pageSize = 1)
+    {
+        $query = Tag::find()->where(['id' => $tag_id])->one()->getArticles();
+        
+        $count = $query->count();
+
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
+
+        $articles = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return [
+            'pages' => $pages,
+            'articles' => $articles,
+        ];
+    }
+
     public static function getPopular()
     {
         return Article::find()
@@ -217,5 +240,23 @@ class Article extends \yii\db\ActiveRecord
             ->orderBy('date desc')
             ->limit(3)
             ->all();
+    }
+
+    public function viewedCounter()
+    {
+        $this->viewed += 1;
+
+        return $this->save(false);
+    }
+
+    public function saveArticle()
+    {
+        $this->user_id = Yii::$app->user->id;
+        return $this->save();
+    }
+
+    public function getArticleComments()
+    {
+        return $this->getComments()->where(['status' => 1])->all();
     }
 }

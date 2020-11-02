@@ -5,7 +5,7 @@
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
-$this->title = 'My Yii Application';
+$this->title = 'Treasure';
 ?>
 
 <!--main content start-->
@@ -27,7 +27,7 @@ $this->title = 'My Yii Application';
                         <div class="post-content">
                             <header class="entry-header text-center text-uppercase">
                                 <h6>
-                                    <a href="<?= Url::toRoute(['site/category', 'id' => $article->category->id]); ?>">
+                                    <a href="<?= Url::toRoute(['site/category', 'category_id' => $article->category->id]); ?>">
                                         <?= $article->category->title; ?>
                                     </a>
                                 </h6>

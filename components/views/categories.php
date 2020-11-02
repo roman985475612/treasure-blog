@@ -7,7 +7,7 @@ use yii\helpers\Url;
     <ul>
         <?php foreach($categories as $category): ?>
             <li>
-                <a href="<?= Url::toRoute(['site/category', 'id' => $category->id]); ?>">
+                <a href="<?= Url::toRoute(['site/category', 'category_id' => $category->id]); ?>">
                     <?= $category->title; ?>
                 </a>
                 <span class="post-count pull-right"> (<?= $category->getArticlesCount(); ?>)</span>
