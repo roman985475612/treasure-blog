@@ -25,7 +25,10 @@ use yii\widgets\ActiveForm;
         <br>
         <?php $form = ActiveForm::begin([
             'action' => ['site/comment', 'article_id' => $article->id],
-            'options' => ['class' => 'form-horizontal contact-form'],
+            'options' => [
+                'class' => 'form-horizontal contact-form',
+            ],
+            'method' => 'POST',
             'fieldConfig' => [
                 'template' => '<div class="col-md-12">{input}</div>',
             ],

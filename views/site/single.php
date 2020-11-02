@@ -44,8 +44,9 @@ $this->title = $article->title;
                 </article>
                 
                 <?= $this->render('_comment', [
-                    'comments' => $comments,
+                    'comments'    => $comments,
                     'commentForm' => $commentForm,
+                    'article'     => $article,
                 ]) ?>
 
             </div>
